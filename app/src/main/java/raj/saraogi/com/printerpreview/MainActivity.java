@@ -122,14 +122,17 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             Bundle b = new Bundle();
-            String uriPath = uri.toString();
-            int indexOf = uriPath.indexOf("com.google.android.apps");
-            try {
-                openPDF(uriPath,uri);
-            } catch (IOException e) {
-                Toast.makeText(this,"In Exception",Toast.LENGTH_LONG).show();
-                e.printStackTrace();
+            if(uri!=null){
+                String uriPath = uri.toString();
+                int indexOf = uriPath.indexOf("com.google.android.apps");
+                try {
+                    openPDF(uriPath,uri);
+                } catch (IOException e) {
+                    Toast.makeText(this,"In Exception",Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
             }
+
             // startActivity(new Intent(this,TestPreview.class).putExtra("uri",uri));
         }
 
@@ -172,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
                 //pdfRenderer.close();
 
             }
-            int show[]={0,1,2,4,5,6,7,8,9};
+            int show[]={0,1,2,4,6,7,8,9};
 
 
 
