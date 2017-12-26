@@ -30,22 +30,20 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
-    Button btnSelectFile;
-    RangeSeekBar<Integer> seekBar ;
-    ImageView pdfView;
-    ArrayList<Bitmap> bitmapArrayList = new ArrayList<>();
-    ViewPager viewPager;
-
-
     private static final int REQUEST_EXTERNAL_STORAGE = 101;
     private static final int READ_REQUEST_CODE = 106;
     private static final int PERMISSION_FOR_FINELOCATION_ACCESS = 105;
-    private String fileName;
-    private String TAG = "DashBoardFragment";
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
+    Button btnSelectFile, btnProtrait, btnLandscape;
+    RangeSeekBar<Integer> seekBar;
+    ImageView pdfView;
+    ArrayList<Bitmap> bitmapArrayList = new ArrayList<>();
+    ViewPager viewPager;
+    private String fileName;
+    private String TAG = "DashBoardFragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         btnSelectFile=(Button)findViewById(R.id.btnSelectFile);
         viewPager=(ViewPager)findViewById(R.id.pdfPager);
-
+        btnProtrait = (Button) findViewById(R.id.btnportrait);
 
         //pdfView=(ImageView)findViewById(R.id.pdfView);
     }
@@ -138,6 +136,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void changePortrait(View v) {
+        int orientationFlag = 1;
+        renderPager(orientationFlag);
+    }
+
+    public void changeLandscape(View v) {
+        int orientationFlag = 2;
+        renderPager(orientationFlag);
+    }
+
     private void openPDF(String path,Uri uri) throws IOException {
         Toast.makeText(this, "In view", Toast.LENGTH_LONG).show();
         FileManager fileManager = FileManager.getInstance();
@@ -175,12 +183,9 @@ public class MainActivity extends AppCompatActivity {
                 //pdfRenderer.close();
 
             }
-            int show[]={0,1,2,4,6,7,8,9};
 
+            renderPager(2);
 
-
-            Pager pager=new Pager(getSupportFragmentManager(),show.length,show[0],bitmapArrayList,show);
-            viewPager.setAdapter(pager);
 
 
 
@@ -197,6 +202,19 @@ public class MainActivity extends AppCompatActivity {
            // pdfView.setImageBitmap(bitmap);
 
         }
+    }
+
+    public void renderPager(int oflag) {
+
+        viewPager.setAdapter(null);
+        Toast.makeText(this, "In page render", Toast.LENGTH_SHORT).show();
+        int show[] = {0, 1, 2};
+
+        Pager pager = new Pager(getSupportFragmentManager(), show.length, show[0], bitmapArrayList, show, oflag);
+        pager.notifyDataSetChanged();
+        viewPager.setAdapter(pager);
+        viewPager.setOffscreenPageLimit(0);
+
     }
 
 }
