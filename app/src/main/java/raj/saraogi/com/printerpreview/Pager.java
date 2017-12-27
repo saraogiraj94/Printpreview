@@ -19,10 +19,11 @@ public class Pager extends FragmentStatePagerAdapter {
     String[] name;
     Bundle bundle = new Bundle();
     List<Bitmap> arrayList;
-    int pos, orientFlag;
+    int pos, orientFlag, colorFlag;
+
     int show[];
     //Constructor to the class
-    public Pager(FragmentManager fm, int tabCount, int pos, List<Bitmap> arrayList, int[] show, int orientFlag) {
+    public Pager(FragmentManager fm, int tabCount, int pos, List<Bitmap> arrayList, int[] show, int orientFlag, int colorFlag) {
         super(fm);
         //Initializing tab count
         this.tabCount = tabCount;
@@ -30,8 +31,10 @@ public class Pager extends FragmentStatePagerAdapter {
         this.arrayList = arrayList;
         this.show=show;
         this.orientFlag = orientFlag;
-        this.bundle=bundle;
+        this.colorFlag = colorFlag;
+        this.bundle = bundle;
     }
+
 
     //Overriding method getItem
     @Override
@@ -41,8 +44,10 @@ public class Pager extends FragmentStatePagerAdapter {
         Bundle bundle =new Bundle();
         bundle.putSerializable("list", (Serializable) arrayList);
         bundle.putInt("pos",position);
+        bundle.putInt("colorFlag", colorFlag);
         bundle.putInt("orientFlag", orientFlag);
         bundle.putIntArray("show",show);
+        bundle.putBoolean("bookletFlag", false);
         PageFragment pageFragment = new PageFragment();
         pageFragment.setArguments(bundle);
         return  pageFragment;
@@ -62,4 +67,5 @@ public class Pager extends FragmentStatePagerAdapter {
     public int getItemPosition(Object object) {
         return super.getItemPosition(object);
     }
+
 }

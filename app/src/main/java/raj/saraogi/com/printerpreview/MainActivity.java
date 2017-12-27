@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView pdfView;
     ArrayList<Bitmap> bitmapArrayList = new ArrayList<>();
     ViewPager viewPager;
+    int orientFlag = 1, colorFlag = 2;
     private String fileName;
     private String TAG = "DashBoardFragment";
 
@@ -137,14 +138,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changePortrait(View v) {
-        int orientationFlag = 1;
-        renderPager(orientationFlag);
+        orientFlag = 1;
+        renderPager();
     }
 
     public void changeLandscape(View v) {
-        int orientationFlag = 2;
-        renderPager(orientationFlag);
+        orientFlag = 2;
+        renderPager();
     }
+
+    public void changeColor(View v) {
+        colorFlag = 2;
+        renderPager();
+    }
+
+    public void changeBlack(View v) {
+        colorFlag = 1;
+        renderPager();
+    }
+
 
     private void openPDF(String path,Uri uri) throws IOException {
         Toast.makeText(this, "In view", Toast.LENGTH_LONG).show();
@@ -184,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
-            renderPager(2);
+            renderPager();
 
 
 
@@ -204,13 +216,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void renderPager(int oflag) {
+    public void renderPager() {
 
         viewPager.setAdapter(null);
         Toast.makeText(this, "In page render", Toast.LENGTH_SHORT).show();
         int show[] = {0, 1, 2};
 
-        Pager pager = new Pager(getSupportFragmentManager(), show.length, show[0], bitmapArrayList, show, oflag);
+        Pager pager = new Pager(getSupportFragmentManager(), show.length, show[0], bitmapArrayList, show, orientFlag, colorFlag);
         pager.notifyDataSetChanged();
         viewPager.setAdapter(pager);
         viewPager.setOffscreenPageLimit(0);

@@ -27,6 +27,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
     compile 'com.android.support:support-v4:26.0.0-alpha1'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'jp.wasabeef:glide-transformations:3.0.1'
+
     compile 'com.yahoo.mobile.client.android.util.rangeseekbar:rangeseekbar-library:0.1.0'
 
 
