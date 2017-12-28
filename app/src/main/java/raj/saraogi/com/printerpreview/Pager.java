@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Raj Saraogi on 12-05-2016.
  */
 public class Pager extends FragmentStatePagerAdapter {
-    int tabCount;
+    int tabCount, totalPagesAvailable;
     String[] name;
     Bundle bundle = new Bundle();
     List<Bitmap> arrayList;
@@ -23,7 +23,7 @@ public class Pager extends FragmentStatePagerAdapter {
 
     int show[];
     //Constructor to the class
-    public Pager(FragmentManager fm, int tabCount, int pos, List<Bitmap> arrayList, int[] show, int orientFlag, int colorFlag) {
+    public Pager(FragmentManager fm, int tabCount, int pos, List<Bitmap> arrayList, int[] show, int orientFlag, int colorFlag, int totalPagesAvailable) {
         super(fm);
         //Initializing tab count
         this.tabCount = tabCount;
@@ -32,6 +32,7 @@ public class Pager extends FragmentStatePagerAdapter {
         this.show=show;
         this.orientFlag = orientFlag;
         this.colorFlag = colorFlag;
+        this.totalPagesAvailable = totalPagesAvailable;
         this.bundle = bundle;
     }
 
@@ -47,7 +48,8 @@ public class Pager extends FragmentStatePagerAdapter {
         bundle.putInt("colorFlag", colorFlag);
         bundle.putInt("orientFlag", orientFlag);
         bundle.putIntArray("show",show);
-        bundle.putBoolean("bookletFlag", false);
+        bundle.putInt("totalPagesAvailable", totalPagesAvailable);
+        bundle.putBoolean("bookletFlag", true);
         PageFragment pageFragment = new PageFragment();
         pageFragment.setArguments(bundle);
         return  pageFragment;

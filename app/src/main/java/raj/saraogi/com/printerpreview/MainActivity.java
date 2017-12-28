@@ -220,9 +220,19 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager.setAdapter(null);
         Toast.makeText(this, "In page render", Toast.LENGTH_SHORT).show();
-        int show[] = {0, 1, 2};
+        int show[] = {0, 1, 2, 3, 4, 5, 6, 7, 8};
 
-        Pager pager = new Pager(getSupportFragmentManager(), show.length, show[0], bitmapArrayList, show, orientFlag, colorFlag);
+        int tabs;
+        int q = show.length / 4;
+        int r = show.length % 4;
+
+        if (r == 0)
+            tabs = q * 2;
+        else
+            tabs = (q + 1) * 2;
+        int totalPagesAvailabe = tabs * 2;
+
+        Pager pager = new Pager(getSupportFragmentManager(), tabs, show[0], bitmapArrayList, show, orientFlag, colorFlag, totalPagesAvailabe);
         pager.notifyDataSetChanged();
         viewPager.setAdapter(pager);
         viewPager.setOffscreenPageLimit(0);

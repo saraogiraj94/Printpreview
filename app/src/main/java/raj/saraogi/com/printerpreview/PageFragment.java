@@ -47,6 +47,7 @@ public class PageFragment extends Fragment {
         int[] show=getArguments().getIntArray("show");
         int orientFlag = getArguments().getInt("orientFlag");
         int colorFlag = getArguments().getInt("colorFlag");
+        int totalPagesAvailable = getArguments().getInt("totalPagesAvailable");
         boolean bookletFlag = getArguments().getBoolean("bookletFlag");
 
 
@@ -76,17 +77,95 @@ public class PageFragment extends Fragment {
 
             imageView.setImageBitmap(list.get(show[pos]));
         } else {
+            Bitmap b;
+            int totalpagesSelected = show.length;
+            int q = show.length / 4;
+            int r = show.length % 4;
+
+            int n = pos * 2;
+
+
             if (pos % 2 == 0) {
-                Bitmap b = combineImages(list.get(show[pos]), list.get(show[pos + 1]));
-                imageView.setImageBitmap(b);
-            } else {
-                if (list.get(show[pos + 1]) != null || list.get(show[pos + 2]) != null) {
-                    Bitmap b = combineImages(list.get(show[pos + 1]), list.get(show[pos + 2]));
+                //Left side greater
+                int currentPageLeft = totalPagesAvailable - pos;
+                int currentPageRight = pos + 1;
+                Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+                Bitmap bmp = Bitmap.createBitmap(list.get(show[0]).getWidth(), list.get(show[0]).getHeight(), conf); // this creates a MUTABLE bitmap
+
+                //Check whether left side selected is blank
+                if (currentPageLeft > totalpagesSelected && currentPageRight > totalpagesSelected) {
+                    //Add blank on both side
+                    b = combineImages(bmp, bmp);
+                    imageView.setImageBitmap(b);
+                } else if (currentPageLeft > totalpagesSelected && currentPageRight <= totalpagesSelected) {
+                    //Add blank on left side
+                    b = combineImages(bmp, list.get(show[currentPageRight - 1]));
+                    imageView.setImageBitmap(b);
+                } else if (currentPageLeft <= totalpagesSelected && currentPageRight > totalpagesSelected) {
+                    // Add Blank on right side
+                    b = combineImages(list.get(show[currentPageLeft - 1]), bmp);
+                    imageView.setImageBitmap(b);
+                } else {
+                    //Add page on both side
+                    b = combineImages(list.get(show[currentPageLeft - 1]), list.get(show[currentPageRight - 1]));
                     imageView.setImageBitmap(b);
                 }
 
+            } else {
+                int currentPageLeft = pos + 1;
+                int currentPageRight = totalPagesAvailable - pos;
+                Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+                Bitmap bmp = Bitmap.createBitmap(list.get(show[0]).getWidth(), list.get(show[0]).getHeight(), conf); // this creates a MUTABLE bitmap
+
+                //Check whether left side selected is blank
+                if (currentPageLeft > totalpagesSelected && currentPageRight > totalpagesSelected) {
+                    //Add blank on both side
+                    b = combineImages(bmp, bmp);
+                    imageView.setImageBitmap(b);
+                } else if (currentPageLeft > totalpagesSelected && currentPageRight <= totalpagesSelected) {
+                    //Add blank on left side
+                    b = combineImages(bmp, list.get(show[currentPageRight - 1]));
+                    imageView.setImageBitmap(b);
+                } else if (currentPageLeft <= totalpagesSelected && currentPageRight > totalpagesSelected) {
+                    // Add Blank on right side
+                    b = combineImages(list.get(show[currentPageLeft - 1]), bmp);
+                    imageView.setImageBitmap(b);
+                } else {
+                    //Add page on both side
+                    b = combineImages(list.get(show[currentPageLeft - 1]), list.get(show[currentPageRight - 1]));
+                    imageView.setImageBitmap(b);
+                }
 
             }
+//
+//
+//            if(n+1==show.length){
+//                Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+//                Bitmap bmp = Bitmap.createBitmap(list.get(show[n]).getWidth(),list.get(show[n]).getHeight() , conf); // this creates a MUTABLE bitmap
+//                b = combineImages(bmp,list.get(show[n]));
+//            }else{
+//                 b = combineImages(list.get(show[n]), list.get(show[n + 1]));
+//            }
+//
+//
+//            imageView.setImageBitmap(b);
+
+//            if (pos % 2 == 0) {
+//                int n=pos*2;
+//                Bitmap b = combineImages(list.get(show[n]), list.get(show[n + 1]));
+//                imageView.setImageBitmap(b);
+//            } else {
+//                int n=pos*2;
+//                Bitmap b = combineImages(list.get(show[n]), list.get(show[n + 1]));
+//                imageView.setImageBitmap(b);
+
+//                if (list.get(show[pos + 1]) != null || list.get(show[pos + 2]) != null) {
+//                    Bitmap b = combineImages(list.get(show[pos + 1]), list.get(show[pos + 2]));
+//                    imageView.setImageBitmap(b);
+//                }
+
+
+//            }
 
         }
 
