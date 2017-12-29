@@ -15,15 +15,16 @@ import java.util.List;
  * Created by Raj Saraogi on 12-05-2016.
  */
 public class Pager extends FragmentStatePagerAdapter {
-    int tabCount, totalPagesAvailable;
+    int tabCount, totalPagesAvailable, totalPagesSelected, pagesPerSheet, rows, columns;
     String[] name;
     Bundle bundle = new Bundle();
     List<Bitmap> arrayList;
+    boolean normalFlag = false, bookletFlag = false, multipleFlag = false;
     int pos, orientFlag, colorFlag;
 
     int show[];
     //Constructor to the class
-    public Pager(FragmentManager fm, int tabCount, int pos, List<Bitmap> arrayList, int[] show, int orientFlag, int colorFlag, int totalPagesAvailable) {
+    public Pager(FragmentManager fm, int tabCount, int pos, List<Bitmap> arrayList, int[] show, int orientFlag, int colorFlag, int totalPagesAvailable, boolean normal, boolean booklet) {
         super(fm);
         //Initializing tab count
         this.tabCount = tabCount;
@@ -33,7 +34,25 @@ public class Pager extends FragmentStatePagerAdapter {
         this.orientFlag = orientFlag;
         this.colorFlag = colorFlag;
         this.totalPagesAvailable = totalPagesAvailable;
+        this.normalFlag = normal;
+        this.bookletFlag = booklet;
         this.bundle = bundle;
+    }
+
+    public Pager(FragmentManager supportFragmentManager, int noOfTabs, int pos, ArrayList<Bitmap> bitmapArrayList, int[] show, int orientFlag, int colorFlag, int totalPagesSelected, int pagesPerSheet, int rows, int columns) {
+        super(supportFragmentManager);
+        this.tabCount = noOfTabs;
+        this.pos = pos;
+        this.arrayList = bitmapArrayList;
+        this.show = show;
+        this.orientFlag = orientFlag;
+        this.colorFlag = colorFlag;
+        this.totalPagesSelected = totalPagesSelected;
+        this.pagesPerSheet = pagesPerSheet;
+        this.rows = rows;
+        this.columns = columns;
+        this.multipleFlag = true;
+
     }
 
 
@@ -49,7 +68,14 @@ public class Pager extends FragmentStatePagerAdapter {
         bundle.putInt("orientFlag", orientFlag);
         bundle.putIntArray("show",show);
         bundle.putInt("totalPagesAvailable", totalPagesAvailable);
-        bundle.putBoolean("bookletFlag", true);
+        bundle.putBoolean("bookletFlag", bookletFlag);
+        bundle.putBoolean("multipleFlag", multipleFlag);
+        bundle.putInt("totalPagesSelected", totalPagesSelected);
+        bundle.putInt("pagesPerSheet", pagesPerSheet);
+        bundle.putInt("rows", rows);
+        bundle.putInt("columns", columns);
+        bundle.putBoolean("scaleFlag", true);
+
         PageFragment pageFragment = new PageFragment();
         pageFragment.setArguments(bundle);
         return  pageFragment;
@@ -64,6 +90,7 @@ public class Pager extends FragmentStatePagerAdapter {
     public int getCount() {
         return tabCount;
     }
+
 
     @Override
     public int getItemPosition(Object object) {

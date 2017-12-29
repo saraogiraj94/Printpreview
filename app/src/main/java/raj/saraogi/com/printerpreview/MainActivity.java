@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView pdfView;
     ArrayList<Bitmap> bitmapArrayList = new ArrayList<>();
     ViewPager viewPager;
-    int orientFlag = 1, colorFlag = 2;
+    int orientFlag = 1, colorFlag = 2, typeFlag = 1;
     private String fileName;
     private String TAG = "DashBoardFragment";
 
@@ -196,8 +196,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
+            //renderMultiplePages();
             renderPager();
-
 
 
 
@@ -216,11 +216,38 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void renderBooklet(View v) {
+        typeFlag = 2;
+        renderBooklet();
+    }
+
+    public void renderMultiple(View v) {
+        typeFlag = 3;
+        renderMultiplePages();
+    }
+
+    public void renderNormal(View v) {
+        typeFlag = 1;
+        renderPager();
+    }
+
     public void renderPager() {
+        viewPager.setAdapter(null);
+        Toast.makeText(this, "In page render", Toast.LENGTH_SHORT).show();
+        int show[] = {0, 1, 2, 3};
+        int tabs = show.length;
+
+        Pager pager = new Pager(getSupportFragmentManager(), tabs, show[0], bitmapArrayList, show, orientFlag, colorFlag, tabs, true, false);
+        pager.notifyDataSetChanged();
+        viewPager.setAdapter(pager);
+        viewPager.setOffscreenPageLimit(0);
+    }
+
+    public void renderBooklet() {
 
         viewPager.setAdapter(null);
         Toast.makeText(this, "In page render", Toast.LENGTH_SHORT).show();
-        int show[] = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+        int show[] = {0, 1, 2, 3};
 
         int tabs;
         int q = show.length / 4;
@@ -232,10 +259,36 @@ public class MainActivity extends AppCompatActivity {
             tabs = (q + 1) * 2;
         int totalPagesAvailabe = tabs * 2;
 
-        Pager pager = new Pager(getSupportFragmentManager(), tabs, show[0], bitmapArrayList, show, orientFlag, colorFlag, totalPagesAvailabe);
+        Pager pager = new Pager(getSupportFragmentManager(), tabs, show[0], bitmapArrayList, show, orientFlag, colorFlag, totalPagesAvailabe, false, true);
         pager.notifyDataSetChanged();
         viewPager.setAdapter(pager);
         viewPager.setOffscreenPageLimit(0);
+
+    }
+
+    public void renderMultiplePages() {
+        viewPager.setAdapter(null);
+        Toast.makeText(this, "In page render", Toast.LENGTH_SHORT).show();
+        int show[] = {0, 1, 2, 3, 4, 5, 6, 7};
+
+        int totalPagesSelected = show.length;
+        int totalPagesRow = 2;
+        int totalColumns = 3;
+        int totalPagesPerSheet = totalPagesRow * totalColumns;
+
+        int noOfTabs;
+        if (totalPagesSelected % totalPagesPerSheet == 0) {
+            noOfTabs = totalPagesSelected / totalPagesPerSheet;
+        } else {
+            noOfTabs = (totalPagesSelected / totalPagesPerSheet) + 1;
+        }
+
+
+        Pager pager = new Pager(getSupportFragmentManager(), noOfTabs, show[0], bitmapArrayList, show, orientFlag, colorFlag, totalPagesSelected, totalPagesPerSheet, totalPagesRow, totalColumns);
+        pager.notifyDataSetChanged();
+        viewPager.setAdapter(pager);
+        viewPager.setOffscreenPageLimit(0);
+
 
     }
 

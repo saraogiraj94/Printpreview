@@ -16,6 +16,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jp.wasabeef.glide.transformations.GrayscaleTransformation;
@@ -48,35 +49,22 @@ public class PageFragment extends Fragment {
         int orientFlag = getArguments().getInt("orientFlag");
         int colorFlag = getArguments().getInt("colorFlag");
         int totalPagesAvailable = getArguments().getInt("totalPagesAvailable");
+        int pagesPerSheet = getArguments().getInt("pagesPerSheet");
+        int rows = getArguments().getInt("rows");
+        int columns = getArguments().getInt("columns");
+        boolean scaleFlag = getArguments().getBoolean("scaleFlag");
+        int totalPagesSelected = getArguments().getInt("totalPagesSelected");
         boolean bookletFlag = getArguments().getBoolean("bookletFlag");
+        boolean multipleFlag = getArguments().getBoolean("multipleFlag");
 
+        if (colorFlag == 1) {
+            ColorMatrix matrix = new ColorMatrix();
+            matrix.setSaturation(0);
 
-        if (!bookletFlag) {
-            if (orientFlag == 1) {
-                int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, getResources().getDisplayMetrics());
-                int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 297, getResources().getDisplayMetrics());
-
-                FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(width, height);
-                fragmentImage.setLayoutParams(lp);
-            } else {
-                int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 297, getResources().getDisplayMetrics());
-                int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, getResources().getDisplayMetrics());
-
-                FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(width, height);
-                fragmentImage.setLayoutParams(lp);
-            }
-            if (colorFlag == 1) {
-                ColorMatrix matrix = new ColorMatrix();
-                matrix.setSaturation(0);
-
-                ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-                imageView.setColorFilter(filter);
-            } else {
-
-            }
-
-            imageView.setImageBitmap(list.get(show[pos]));
-        } else {
+            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+            imageView.setColorFilter(filter);
+        }
+        if (bookletFlag) {
             Bitmap b;
             int totalpagesSelected = show.length;
             int q = show.length / 4;
@@ -137,6 +125,61 @@ public class PageFragment extends Fragment {
                 }
 
             }
+        } else if (multipleFlag) {
+            //Show Multiple pages on the same sheet
+            //Create list of bitmaps and have blank image if needed
+            Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+            Bitmap bmp = Bitmap.createBitmap(list.get(show[0]).getWidth(), list.get(show[0]).getHeight() / columns, conf); // this creates a MUTABLE bitmap
+
+            int startingPage = pos * pagesPerSheet;
+            int lastPage = startingPage + pagesPerSheet;
+            List<Bitmap> tempList = new ArrayList<>();
+            for (int page = startingPage; page < lastPage; page++) {
+                //Add Blank Bitmap
+                if (page >= show.length)
+                    tempList.add(bmp);
+                else
+                    tempList.add(list.get(show[page]));
+            }
+
+            Bitmap b = combineMultipleImages(tempList, rows, columns);
+            if (columns >= rows) {
+                int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, getResources().getDisplayMetrics());
+                int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 297, getResources().getDisplayMetrics());
+
+                FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(width, height);
+                fragmentImage.setLayoutParams(lp);
+            }
+
+            imageView.setImageBitmap(b);
+
+
+        } else {
+            if (orientFlag == 1) {
+                int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, getResources().getDisplayMetrics());
+                int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 297, getResources().getDisplayMetrics());
+
+                FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(width, height);
+                fragmentImage.setLayoutParams(lp);
+            } else {
+                int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 297, getResources().getDisplayMetrics());
+                int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, getResources().getDisplayMetrics());
+
+                FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(width, height);
+                fragmentImage.setLayoutParams(lp);
+            }
+
+            if (scaleFlag) {
+                int imageHeight = (int) (list.get(show[pos]).getHeight() * .5);
+                int imageWidth = (int) (list.get(show[pos]).getWidth() * .5);
+                imageView.getLayoutParams().height = imageHeight;
+                imageView.getLayoutParams().width = imageWidth;
+
+            }
+
+
+            imageView.setImageBitmap(list.get(show[pos]));
+        }
 //
 //
 //            if(n+1==show.length){
@@ -167,7 +210,7 @@ public class PageFragment extends Fragment {
 
 //            }
 
-        }
+
 
 
         return v;
@@ -195,6 +238,62 @@ public class PageFragment extends Fragment {
 
         comboImage.drawBitmap(c, 0f, 0f, null);
         comboImage.drawBitmap(s, c.getWidth() + 20, 0f, null);
+
+        // this is an extra bit I added, just incase you want to save the new image somewhere and then return the location
+    /*String tmpImg = String.valueOf(System.currentTimeMillis()) + ".png";
+
+    OutputStream os = null;
+    try {
+      os = new FileOutputStream(loc + tmpImg);
+      cs.compress(CompressFormat.PNG, 100, os);
+    } catch(IOException e) {
+      Log.e("combineImages", "problem combining images", e);
+    }*/
+
+        return cs;
+    }
+
+    public Bitmap combineMultipleImages(List<Bitmap> bitmaps, int rows, int columns) { // can add a 3rd parameter 'String loc' if you want to save the new image - left some code to do that at the bottom
+
+        if (columns > rows) {
+            //Swap Rows with column and change the orientation
+            int temp = rows;
+            rows = columns;
+            columns = temp;
+        }
+
+        int csWidth = (bitmaps.get(0).getWidth() + 20) * rows;
+        int csHeight = (bitmaps.get(0).getHeight() + 20) * columns;
+
+        Bitmap cs = Bitmap.createBitmap(csWidth, csHeight, Bitmap.Config.ARGB_8888);
+        Canvas comboImage = new Canvas(cs);
+        int width, height = 0;
+        int totalWidth;
+        int k = 0;
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
+                comboImage.drawBitmap(bitmaps.get(k), i * (bitmaps.get(k).getWidth() + 20), j * (bitmaps.get(k).getHeight() + 20), null);
+                k++;
+            }
+        }
+
+
+//        if (c.getWidth() > s.getWidth()) {
+//            width = c.getWidth() + s.getWidth() + 20;
+//            height = c.getHeight();
+//        } else {
+//            width = s.getWidth() + s.getWidth() + 20;
+//            height = c.getHeight();
+//        }
+
+
+//
+//        cs = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+//
+//        Canvas comboImage = new Canvas(cs);
+//
+//        comboImage.drawBitmap(c, 0f, 0f, null);
+//        comboImage.drawBitmap(s, c.getWidth() + 20, 0f, null);
 
         // this is an extra bit I added, just incase you want to save the new image somewhere and then return the location
     /*String tmpImg = String.valueOf(System.currentTimeMillis()) + ".png";
