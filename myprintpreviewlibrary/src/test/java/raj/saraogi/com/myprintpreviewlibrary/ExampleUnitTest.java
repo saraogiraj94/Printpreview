@@ -1,4 +1,4 @@
-package raj.saraogi.com.printpreviewlibrary;
+package raj.saraogi.com.myprintpreviewlibrary;
 
 import org.junit.Test;
 

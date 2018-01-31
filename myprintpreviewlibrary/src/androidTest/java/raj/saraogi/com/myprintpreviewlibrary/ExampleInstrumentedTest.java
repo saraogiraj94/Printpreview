@@ -1,4 +1,4 @@
-package raj.saraogi.com.printpreviewlibrary;
+package raj.saraogi.com.myprintpreviewlibrary;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("raj.saraogi.com.printpreviewlibrary.test", appContext.getPackageName());
+        assertEquals("raj.saraogi.com.myprintpreviewlibrary.test", appContext.getPackageName());
     }
 }

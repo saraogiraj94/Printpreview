@@ -28,6 +28,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import raj.saraogi.com.printpreviewlibrary.DocumentPreview;
+
 
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_EXTERNAL_STORAGE = 101;
@@ -124,12 +126,15 @@ public class MainActivity extends AppCompatActivity {
             if(uri!=null){
                 String uriPath = uri.toString();
                 int indexOf = uriPath.indexOf("com.google.android.apps");
-                try {
-                    openPDF(uriPath,uri);
-                } catch (IOException e) {
-                    Toast.makeText(this,"In Exception",Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
-                }
+
+                useLib(uri);
+//                try {
+//
+//                    openPDF(uriPath,uri);
+//                } catch (IOException e) {
+//                    Toast.makeText(this,"In Exception",Toast.LENGTH_LONG).show();
+//                    e.printStackTrace();
+//                }
             }
 
             // startActivity(new Intent(this,TestPreview.class).putExtra("uri",uri));
@@ -290,6 +295,15 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setOffscreenPageLimit(0);
 
 
+    }
+
+    public void useLib(Uri uri) {
+        DocumentPreview documentPreview = new DocumentPreview();
+        try {
+            documentPreview.openPDF(uri, this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -5,7 +5,7 @@ android {
     buildToolsVersion "26.0.3"
     defaultConfig {
         applicationId "raj.saraogi.com.printerpreview"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -30,6 +30,8 @@ dependencies {
     compile 'jp.wasabeef:glide-transformations:3.0.1'
 
     compile 'com.yahoo.mobile.client.android.util.rangeseekbar:rangeseekbar-library:0.1.0'
+
+
 
 
     testCompile 'junit:junit:4.12'
