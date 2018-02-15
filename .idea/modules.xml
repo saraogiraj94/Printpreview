@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/Printpreview.iml" filepath="$PROJECT_DIR$/Printpreview.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/myprintpreviewlibrary/myprintpreviewlibrary.iml" filepath="$PROJECT_DIR$/myprintpreviewlibrary/myprintpreviewlibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/myprintpreviewlibrarytest/myprintpreviewlibrarytest.iml" filepath="$PROJECT_DIR$/myprintpreviewlibrarytest/myprintpreviewlibrarytest.iml" />
       <module fileurl="file://$PROJECT_DIR$/printpreviewlibrary/printpreviewlibrary.iml" filepath="$PROJECT_DIR$/printpreviewlibrary/printpreviewlibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/printpreviewlibraryimport/printpreviewlibraryimport.iml" filepath="$PROJECT_DIR$/printpreviewlibraryimport/printpreviewlibraryimport.iml" />
     </modules>

@@ -1,1 +1,1 @@
-include ':app', ':printpreviewlibrary', ':printpreviewlibraryimport', ':PrintP', ':myprintpreviewlibrary'
+include ':app', ':printpreviewlibrary', ':printpreviewlibraryimport', ':PrintP', ':myprintpreviewlibrary', ':myprintpreviewlibrarytest'
