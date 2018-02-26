@@ -126,9 +126,8 @@
         android:layout_below="@+id/llpresets"
         android:visibility="gone" />
 
-    <fragment
+    <android.support.v7.widget.ContentFrameLayout
         android:id="@+id/fragment"
-        android:name="raj.saraogi.com.printpreviewlibrary.DocumentPreview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"

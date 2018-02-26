@@ -28,7 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import raj.saraogi.com.printpreviewlibrary.DocumentPreview;
+import raj.saraogi.com.myprintpreviewlibrary.PrintPreviewFragment;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         btnSelectFile=(Button)findViewById(R.id.btnSelectFile);
         viewPager=(ViewPager)findViewById(R.id.pdfPager);
         btnProtrait = (Button) findViewById(R.id.btnportrait);
+        showTestFragment();
 
         //pdfView=(ImageView)findViewById(R.id.pdfView);
     }
@@ -127,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                 String uriPath = uri.toString();
                 int indexOf = uriPath.indexOf("com.google.android.apps");
 
-                useLib(uri);
+                //  useLib(uri);
 //                try {
 //
 //                    openPDF(uriPath,uri);
@@ -297,13 +298,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void useLib(Uri uri) {
-        DocumentPreview documentPreview = new DocumentPreview();
-        try {
-            documentPreview.openPDF(uri, this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void showTestFragment() {
+        PrintPreviewFragment printPreviewFragment = new PrintPreviewFragment();
+        Bundle b = new Bundle();
+        b.putString("sample", "My sample");
+        printPreviewFragment.setArguments(b);
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment, printPreviewFragment, "personalDetailsFragment");
+        fragmentTransaction.addToBackStack("personalDetailsFragment");
+        fragmentTransaction.commit();
     }
+
+
 
 }

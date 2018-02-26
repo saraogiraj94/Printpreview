@@ -64,6 +64,19 @@ public class PageFragment extends Fragment {
             ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
             imageView.setColorFilter(filter);
         }
+        if (orientFlag == 1) {
+            int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, getResources().getDisplayMetrics());
+            int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 297, getResources().getDisplayMetrics());
+
+            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(width, height);
+            fragmentImage.setLayoutParams(lp);
+        } else {
+            int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 297, getResources().getDisplayMetrics());
+            int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, getResources().getDisplayMetrics());
+
+            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(width, height);
+            fragmentImage.setLayoutParams(lp);
+        }
         if (bookletFlag) {
             Bitmap b;
             int totalpagesSelected = show.length;
@@ -155,19 +168,7 @@ public class PageFragment extends Fragment {
 
 
         } else {
-            if (orientFlag == 1) {
-                int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, getResources().getDisplayMetrics());
-                int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 297, getResources().getDisplayMetrics());
 
-                FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(width, height);
-                fragmentImage.setLayoutParams(lp);
-            } else {
-                int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 297, getResources().getDisplayMetrics());
-                int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, getResources().getDisplayMetrics());
-
-                FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(width, height);
-                fragmentImage.setLayoutParams(lp);
-            }
 
             if (scaleFlag) {
                 int imageHeight = (int) (list.get(show[pos]).getHeight() * .5);
